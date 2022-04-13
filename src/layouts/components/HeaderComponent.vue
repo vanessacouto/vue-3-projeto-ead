@@ -3,7 +3,9 @@
     <nav>
       <span class="toggleMenu far fa-bars"></span>
       <span class="logo">
-        <img :src="require('@/assets/images/logo.svg')" alt="EspecializaTi" />
+        <router-link :to="{ name: 'campus.home' }">
+          <img :src="require('@/assets/images/logo.svg')" alt="EspecializaTi" />
+        </router-link>
       </span>
     </nav>
   </header>
@@ -11,6 +13,6 @@
 
 <script>
 export default {
-    name: 'header-component'
-}
+  name: "header-component",
+};
 </script>
