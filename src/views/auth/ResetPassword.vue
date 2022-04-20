@@ -81,20 +81,10 @@
                 type="submit"
                 @click.prevent="auth"
               >
-                <span v-if="loading">Carregando...</span>
-                <span v-else>Login</span>
+                <span v-if="loading">Alterando...</span>
+                <span v-else>Mudar Senha</span>
               </button>
             </form>
-            <span>
-              <p class="fontSmall">
-                Esqueceu sua senha?
-                <router-link
-                  :to="{ name: 'forget.password' }"
-                  class="link primary"
-                  >Clique aqui</router-link
-                >
-              </p>
-            </span>
           </div>
           <span class="copyright fontSmall">
             Todos os Direitos reservados - <b>Especializati</b>
@@ -107,15 +97,19 @@
 
 <script>
 import { ref } from "vue";
-import { useStore } from "vuex";
 import { notify } from "@kyvg/vue3-notification";
 
 import router from "@/router";
+import ResetPasswordService from "@/services/password.reset.service";
 
 export default {
-  name: "Auth",
-  setup() {
-    const store = useStore(); // acesso aos dados do vuex
+  name: "ResetPassword",
+  props: {
+    token: {
+      require: true,
+    },
+  },
+  setup(props) {
     const email = ref("");
     const password = ref("");
     const loading = ref(false);
@@ -123,26 +117,26 @@ export default {
     const auth = () => {
       loading.value = true;
 
-      // essa 'auth' é a action do module de user que passará nossos dados para a AuthService
-      store
-        .dispatch("auth", {
-          email: email.value,
-          password: password.value,
-          device_name: "vue3_web",
+      ResetPasswordService.reset({
+        email: email.value,
+        password: password.value,
+        token: props.token,
+      })
+        .then(() => {
+          notify({
+            title: "Sucesso",
+            text: "Senha atualizada com sucesso"
+          });
+
+          router.push({ name: "auth" });
         })
-        .then(() => router.push({ name: "campus.home" }))
-        .catch(error => {
-          let msgError = "Falha na requisição"
-
-          if(error.status === 422) msgError = "Dados Inválidos"
-          if(error.status === 404) msgError = "Usuário Não Encontrado"
-
+        .catch(() =>
           notify({
             title: "Falha ao autenticar",
-            text: msgError,
-            type: "warn"
-          });
-        })
+            text: "Falha ao recuperar o usuário",
+            type: "warn",
+          })
+        )
         .finally(() => (loading.value = false));
     };
 
