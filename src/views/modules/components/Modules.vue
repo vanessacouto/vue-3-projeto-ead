@@ -5,46 +5,15 @@
         <span class="text">Módulos</span>
         <span class="icon far fa-stream"></span>
       </div>
-      <div class="modules">
+      <div class="modules" v-for="module in modules" :key="module.id">
         <div class="name">
-          <span class="text">Módulo 1</span>
+          <span class="text">{{ module.name }}</span>
           <span class="icon fas fa-sort-down"></span>
         </div>
         <ul class="classes">
-          <li class="active">
+          <li class="active" v-for="lesson in module.lessons" :key="lesson.id">
             <span class="check active fas fa-check"></span>
-            <span class="nameLesson">Aula 01</span>
-          </li>
-          <li>
-            <span class="check active fas fa-check"></span>
-            <span class="nameLesson">Aula 02</span>
-            <span class="file fas fa-file-archive"></span>
-          </li>
-          <li>
-            <span class="check fas fa-check"></span>
-            <span class="nameLesson">Aula 03</span>
-            <span class="file fas fa-file-archive"></span>
-          </li>
-        </ul>
-      </div>
-      <div class="modules">
-        <div class="name">
-          <span class="text">Módulo 2</span>
-          <span class="icon fas fa-sort-down"></span>
-        </div>
-        <ul class="classes">
-          <li>
-            <span class="check fas fa-check"></span>
-            <span class="nameLesson">Aula 01</span>
-          </li>
-          <li>
-            <span class="check active fas fa-check"></span>
-            <span class="nameLesson">Aula 02</span>
-            <span class="file fas fa-file-archive"></span>
-          </li>
-          <li>
-            <span class="check fas fa-check"></span>
-            <span class="nameLesson">Aula 03</span>
+            <span class="nameLesson">{{ lesson.name }}</span>
           </li>
         </ul>
       </div>
@@ -53,7 +22,24 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed } from "vue";
+
 export default {
   name: "Modules",
+  setup() {
+    const store = useStore();
+
+    // pega os dados do curso selecionado
+    //const course = computed(() => store.state.courses.courseSelected);
+
+    // pega os dados dos modulos
+    const modules = computed(() => store.state.courses.courseSelected.modules);
+
+    return {
+      //course,
+      modules,
+    }
+  },
 };
 </script>
