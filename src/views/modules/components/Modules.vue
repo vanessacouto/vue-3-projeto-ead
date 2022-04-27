@@ -21,6 +21,7 @@
           <li 
             v-for="lesson in module.lessons" 
             :key="lesson.id"
+            :class="{'active' : lesson.id === lessonInPlayer.id}"
             @click.prevent="addLessonInPlayer(lesson)">
             <span v-if="lesson.views.length > 0" class="check active fas fa-check"></span>
             <span class="nameLesson">{{ lesson.name }}</span>
@@ -43,6 +44,9 @@ export default {
     // armazena o id do modulo que está sendo exibido
     const showModule = ref('0');
 
+    // aula que está ativa no Player
+    const lessonInPlayer = computed(() => store.state.courses.lessonPlayer)
+
     // pega os dados dos modulos
     const modules = computed(() => store.state.courses.courseSelected.modules);
 
@@ -56,7 +60,8 @@ export default {
       modules,
       showModule,
       toggleModule,
-      addLessonInPlayer
+      addLessonInPlayer,
+      lessonInPlayer
     }
   },
 };
