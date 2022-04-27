@@ -18,7 +18,10 @@
           <span class="icon fas fa-sort-down"></span>
         </div>
         <ul class="classes" v-show="module.id == showModule">
-          <li v-for="lesson in module.lessons" :key="lesson.id">
+          <li 
+            v-for="lesson in module.lessons" 
+            :key="lesson.id"
+            @click.prevent="addLessonInPlayer(lesson)">
             <span v-if="lesson.views.length > 0" class="check active fas fa-check"></span>
             <span class="nameLesson">{{ lesson.name }}</span>
           </li>
@@ -45,10 +48,15 @@ export default {
 
     const toggleModule = (moduleId) => showModule.value = moduleId
 
+    const addLessonInPlayer = (lesson) => {
+      store.commit('SET_LESSON_PLAYER', lesson)
+    }
+
     return {
       modules,
       showModule,
       toggleModule,
+      addLessonInPlayer
     }
   },
 };
