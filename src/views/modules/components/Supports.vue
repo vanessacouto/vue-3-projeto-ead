@@ -34,9 +34,8 @@ export default {
       () => {
         // ação que deve executar se o valor de lessonPlayer mudar
         loading.value = true;
-        store
-          .dispatch("getSupportsOfLesson", lesson.value.id) // pega as duvidas da aula que mudou
-          .finally(() => (loading.value = false)); // quando finalizar, retorna o loading para false
+        store.dispatch("getSupportsOfLesson", lesson.value.id) // pega as duvidas da aula que mudou
+          .finally(() => loading.value = false) // quando finalizar, retorna o loading para false
       }
     );
 
