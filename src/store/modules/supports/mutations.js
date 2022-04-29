@@ -20,6 +20,20 @@ const mutations = {
     ADD_NEW_SUPPORT(state, support) {
         state.supports.data.unshift(support) // adiciona o novo support no começo do array
     },
+
+    ADD_NEW_REPLY_TO_SUPPORT(state, data) {
+        const reply = data.reply
+        const supportId = data.supportId
+        const supports = state.supports.data
+
+        supports.forEach((support, index) => { // percorre os supports
+            if (support === supportId) {
+                supports[index].replies.push(reply) // adiciona a nova resposta
+            }
+        })
+        
+        state.supports.data = supports
+    },
 }
 
 export default mutations

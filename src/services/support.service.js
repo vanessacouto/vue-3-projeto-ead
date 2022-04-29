@@ -21,4 +21,13 @@ export default class SupportService extends BaseService {
                 .catch(error => reject(error.response))
         })
     }
+
+    static async newReplySupport(params) {
+        return new Promise((resolve, reject) => {
+            this.request({ auth: true })
+                .post('/reply-supports', params)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error.response))
+        })
+    }
 }
