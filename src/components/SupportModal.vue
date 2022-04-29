@@ -1,5 +1,6 @@
 <template>
-  <transition name="fade"> <!-- efeito de transicao -->
+  <transition name="fade">
+    <!-- efeito de transicao -->
     <div v-if="showModal" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
@@ -7,11 +8,21 @@
             <div class="modal-header">
               <h3 v-if="!supportReply">Nova dúvida</h3>
               <h3 v-else>Responder para o ticket {{ supportReply }}</h3>
-              <i class="close fas fa-times" title="Cancelar" @click="$emit('closeModal')"></i>
+              <i
+                class="close fas fa-times"
+                title="Cancelar"
+                @click="$emit('closeModal')"
+              ></i>
             </div>
             <div class="details">
-              <span><small>Total de caracteres: {{ description.length }}</small></span>
-              <span><small>(mínimo <b>4</b> e máximo <b>10k</b>)</small></span>
+              <span
+                ><small
+                  >Total de caracteres: {{ description.length }}</small
+                ></span
+              >
+              <span
+                ><small>(mínimo <b>4</b> e máximo <b>10k</b>)</small></span
+              >
             </div>
           </div>
           <div class="modal-body">
@@ -25,14 +36,19 @@
                   @keydown.esc="$emit('closeModal')"
                 ></textarea>
               </div>
-              
+
               <button class="btn reverse" @click.prevent="$emit('closeModal')">
                 <i class="fas fa-times"></i> Cancelar
               </button>
               <button
                 v-if="description.length > 3"
-                class="btn primary text-white animate__animated animate__bounceIn"
-                :class="{disabled: loading}"
+                class="
+                  btn
+                  primary
+                  text-white
+                  animate__animated animate__bounceIn
+                "
+                :class="{ disabled: loading }"
                 :disabled="loading"
                 type="submit"
               >
@@ -49,35 +65,56 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "ModalSupport",
   props: {
-      showModal: {
-          require: true,
-          default: false,
-          type: Boolean
-      },
-      supportReply: {
-          require: true,
-          type: String,
-          default: ""
-      }
+    showModal: {
+      require: true,
+      default: false,
+      type: Boolean,
+    },
+    supportReply: {
+      require: true,
+      type: String,
+      default: "",
+    },
   },
-  emits: ['closeModal'], // declaras os emits
-  setup() {
-    const textarea = ref('')
-    const loading = ref(false)
+  emits: ["closeModal"], // declaras os emits
+  setup(props, {emit}) {
+    props.supportReply
+
+    const store = useStore();
+    const lesson = computed(() => store.state.courses.lessonPlayer)
+    const description = ref("");
+    const loading = ref(false);
+
     const sendForm = () => {
-        
-    }
+      loading.value = true;
+
+      const params = {// dados para e API
+        lesson: lesson.value.id,
+        description: description.value,
+        status: 'P'
+      }
+
+      // chamar a action do vuex
+      store.dispatch('createSupport', params)
+            .then(() => {
+              description.value = '' // limpar o formulario
+              
+              emit('closeModal') // emitir o evento para fechar o modal
+            })
+            .finally(() => (loading.value = false))
+    };
 
     return {
-        textarea,
-        loading,
-        sendForm 
-    }
+      description,
+      loading,
+      sendForm,
+    };
   },
 };
 </script>

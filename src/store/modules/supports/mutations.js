@@ -17,7 +17,7 @@ const mutations = {
         }
     },
 
-    ADD_NEW_SUPPORTS(state, support) {
+    ADD_NEW_SUPPORT(state, support) {
         state.supports.data.unshift(support) // adiciona o novo support no começo do array
     },
 }
