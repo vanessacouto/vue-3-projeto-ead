@@ -5,7 +5,8 @@
         >Dúvidas (total: {{ supports.length }})
         <span v-if="loading">(Carregando...)</span>
       </span>
-      <button class="btn primary" @click.prevent="modal.showModal = true">
+      <button class="btn primary" 
+      @click.prevent="openModal">
         <i class="fas fa-plus"></i>
         Enviar nova dúvida
       </button>
@@ -44,6 +45,7 @@ export default {
       showModal: false,
       supportReply: "",
     });
+    const openModal = () => modal.value = {showModal: true, supportReply: ""}
 
     // só vai chamar a action se o valor de 'lesson' mudar
     watch(
@@ -57,11 +59,18 @@ export default {
       }
     );
 
+    const createNewReplyToSupport = (supportId) => {
+      modal.value.showModal = true
+      modal.value.supportReply = supportId
+    }
+
     return {
       lesson,
       loading,
       supports,
       modal,
+      openModal,
+      createNewReplyToSupport,
     };
   },
   components: {

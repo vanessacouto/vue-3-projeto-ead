@@ -84,8 +84,6 @@ export default {
   },
   emits: ["closeModal"], // declaras os emits
   setup(props, {emit}) {
-    props.supportReply
-
     const store = useStore();
     const lesson = computed(() => store.state.courses.lessonPlayer)
     const description = ref("");
@@ -97,11 +95,15 @@ export default {
       const params = {// dados para e API
         lesson: lesson.value.id,
         description: description.value,
-        status: 'P'
+        status: 'P',
+        support: props.supportReply
       }
 
+      let actionName = 'createSupport'
+      if(props.supportReply != '') actionName = 'createNewReplySupport'
+
       // chamar a action do vuex
-      store.dispatch('createSupport', params)
+      store.dispatch(actionName, params)
             .then(() => {
               description.value = '' // limpar o formulario
               
