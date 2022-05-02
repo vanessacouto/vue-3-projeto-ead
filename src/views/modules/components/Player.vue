@@ -27,19 +27,27 @@
 </template>
 
 <script>
+import { computed, watch } from "vue";
 import { useStore } from "vuex";
-import { computed } from "vue";
 
 export default {
   name: "Player",
   setup() {
     const store = useStore();
 
-    const lesson = computed(() => store.state.courses.lessonPlayer)
+    const lesson = computed(() => store.state.courses.lessonPlayer);
+
+    // o watch vai monitorar toda vez que mudar o valor do lessonPlayer, para poder dispar o 'markLessonViewed' quando satisfeita a condição do if
+    watch(
+      () => store.state.courses.lessonPlayer,
+      () => {
+        if (lesson.value.id != '') // só dispara se o valor for diferente do default (que é vazio)
+          setTimeout(() => store.dispatch("markLessonViewed"), 3000); // só aplica depois de alguns segundos
+      });
 
     return {
-      lesson
-    }
-  }
+      lesson,
+    };
+  },
 };
 </script>
