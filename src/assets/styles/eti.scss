@@ -202,6 +202,32 @@ section#loginPage {
   }
 }
 
+ul#mainMenu {
+  background: #8331a5;
+  min-height: calc(100vh - #{$navSize});
+  width: 220px;
+  padding: 70px 1rem 0 1rem;
+  position: fixed;
+  z-index: 99;
+
+  li {
+    margin: 8px 0;
+
+    a {
+      color: #FFF;
+      text-decoration: none;
+      display: block;
+      padding: 10px 10px;
+      transition: all .5s;
+      border-radius: 10px;
+
+      &:hover {
+        background-color: rgb(183 183 183 / 28%);
+      }
+    }
+  }
+}
+
 header#header {
   nav {
     height: 70px;
