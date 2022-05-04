@@ -11,7 +11,8 @@
 
     <div class="content">
       <ul class="listCourses">
-        <card-course
+        <card-course 
+          class="animate__animated animate__headShake"
           v-for="course in courses"
           :key="course.id"
           :bgName="'laravel'"

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="card" v-for="support in supports.data" :key="support.id">
-      <div class="commentContent main">
+      <div class="commentContent main animate__animated animate__fadeIn">
         <span class="avatar">
           <img
             :src="[
